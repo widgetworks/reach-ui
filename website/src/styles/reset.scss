@@ -1,0 +1,93 @@
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+}
+
+a {
+  background-color: transparent;
+  -webkit-text-decoration-skip: objects;
+}
+
+a:active,
+a:hover {
+  outline-width: 0;
+}
+
+dfn {
+  font-style: italic;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+img {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+}
+
+figure {
+  margin: 1em 2.5em;
+}
+
+optgroup {
+  font-weight: 700;
+}
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+tt,
+code {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+pre code {
+  background: none;
+}
+
+code::before,
+code:after,
+tt::before,
+tt::after {
+  letter-spacing: -0.2em;
+  content: " ";
+}
+
+pre code::before,
+pre code::after,
+pre tt::before,
+pre tt::after {
+  content: "";
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+::after,
+::before {
+  box-sizing: inherit;
+}

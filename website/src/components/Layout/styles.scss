@@ -1,0 +1,80 @@
+/*
+
+|----|--------------------|------|
+|----|--------------------|      |
+|    |                    |      |
+|    |                    |      |
+|    |                    |      |
+|    |                    |      |
+|    |--------------------|      |
+|----|--------------------|------|
+
+*/
+
+.Layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  &__Header {
+    position: absolute;
+    position: sticky;
+    width: 100%;
+    top: 0;
+  }
+
+  &__main-outer {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    flex: 1 1 0%;
+  }
+
+  &__main-inner {
+    display: flex;
+    height: 100%;
+  }
+
+  &__TopNav-wrapper {
+    padding: var(--rhythm);
+    display: flex;
+    place-items: center;
+  }
+
+  &__SearchField-wrapper {
+    padding: var(--rhythm);
+    flex: 0 0 var(--width-main-sidebar);
+  }
+
+  &__side-left {
+    width: var(--width-main-sidebar);
+    flex-direction: column;
+    flex: 0 0 var(--width-main-sidebar);
+    padding: var(--rhythm);
+    padding-top: 0;
+  }
+
+  &__content {
+    display: flex;
+    width: 100%;
+    flex: 1 1 100%;
+    overflow-x: hidden;
+  }
+
+  &__content-inner {
+    height: 100%;
+    flex: 1 1 100%;
+  }
+
+  &__side-right {
+    height: 100%;
+    width: var(--width-main-sidebar);
+    flex: 0 0 var(--width-main-sidebar);
+    padding: var(--rhythm);
+  }
+
+  &__Footer {
+    padding: var(--rhythm);
+    padding-left: var(--width-main-sidebar);
+  }
+}

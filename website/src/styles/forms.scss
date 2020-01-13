@@ -1,0 +1,17 @@
+button,
+input,
+select,
+textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+  padding: var(--padding-input) calc(var(--padding-input) / 1.825);
+  font-family: inherit;
+  font-size: 100%;
+  line-height: var(--line-height-input);
+  margin: 0;
+  border: 1px solid var(--color-input-border);
+  background: var(--color-input-background);
+  color: inherit;
+}

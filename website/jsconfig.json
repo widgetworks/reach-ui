@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "react-helmet": ["src/components/Helmet"],
+      "$components/*": ["src/components/*"],
+      "$images/*": ["src/images/*"],
+      "$lib/*": ["src/lib/*"],
+      "$pages/*": ["src/pages/*"],
+      "$src/*": ["src/*"],
+      "$styles/*": ["src/styles/*"],
+      "$templates/*": ["src/templates/*"]
+    }
+  }
+}

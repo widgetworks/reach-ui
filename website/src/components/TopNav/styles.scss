@@ -1,0 +1,9 @@
+.TopNav {
+  &__NavList {
+    display: flex;
+
+    .NavItem:not(:first-of-type) {
+      margin-left: var(--rhythm);
+    }
+  }
+}

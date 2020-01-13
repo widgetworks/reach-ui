@@ -1,0 +1,107 @@
+{
+  "name": "@reach/reach-ui-website",
+  "description": "The accessible foundation of your React apps and design systems",
+  "private": true,
+  "version": "0.1.0",
+  "author": "React Training <hello@reacttraining.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@hot-loader/react-dom": "16.9.0",
+    "@mdx-js/mdx": "^1.5.3",
+    "@mdx-js/react": "^1.5.3",
+    "@philpl/buble": "^0.19.7",
+    "@reach/alert": "file:../packages/alert",
+    "@reach/alert-dialog": "file:../packages/alert-dialog",
+    "@reach/auto-id": "file:../packages/auto-id",
+    "@reach/combobox": "file:../packages/combobox",
+    "@reach/component-component": "file:../packages/component-component",
+    "@reach/dialog": "file:../packages/dialog",
+    "@reach/menu-button": "file:../packages/menu-button",
+    "@reach/popover": "file:../packages/popover",
+    "@reach/portal": "file:../packages/portal",
+    "@reach/rect": "file:../packages/rect",
+    "@reach/skip-nav": "file:../packages/skip-nav",
+    "@reach/slider": "file:../packages/slider",
+    "@reach/tabs": "file:../packages/tabs",
+    "@reach/tooltip": "file:../packages/tooltip",
+    "@reach/utils": "file:../packages/utils",
+    "@reach/visually-hidden": "file:../packages/visually-hidden",
+    "@reach/window-size": "file:../packages/window-size",
+    "classnames": "^2.2.6",
+    "core-js": "^3.6.3",
+    "gatsby": "^2.18.21",
+    "gatsby-image": "^2.2.38",
+    "gatsby-plugin-google-analytics": "^2.1.32",
+    "gatsby-plugin-manifest": "^2.2.37",
+    "gatsby-plugin-mdx": "^1.0.67",
+    "gatsby-plugin-offline": "^3.0.31",
+    "gatsby-plugin-sass": "^2.1.27",
+    "gatsby-plugin-sharp": "^2.3.13",
+    "gatsby-remark-emoji": "^0.0.3",
+    "gatsby-remark-images": "^3.1.42",
+    "gatsby-remark-slug": "^0.1.0",
+    "gatsby-source-filesystem": "^2.1.46",
+    "gatsby-transformer-sharp": "^2.3.12",
+    "node-sass": "^4.13.0",
+    "postcss-preset-env": "^6.7.0",
+    "prism-react-renderer": "^1.0.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-fast-compare": "^2.0.4",
+    "react-dom": "^16.12.0",
+    "react-side-effect": "^2.1.0",
+    "react-spring": "^8.0.27",
+    "use-throttle": "^0.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "gatsby build",
+    "dev": "gatsby develop",
+    "start": "yarn dev",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reach/reach-ui.git",
+    "directory": "website"
+  },
+  "bugs": {
+    "url": "https://github.com/reach/reach-ui/issues"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "> 2%",
+    "maintained node versions"
+  ],
+  "eslintConfig": {
+    "extends": "react-app",
+    "globals": {
+      "__DEV__": "readonly"
+    },
+    "rules": {
+      "no-unused-vars": [
+        1,
+        {
+          "args": "after-used",
+          "ignoreRestSiblings": true,
+          "argsIgnorePattern": "^(event|_)$"
+        }
+      ],
+      "import/first": 0,
+      "jsx-a11y/no-static-element-interactions": [
+        1,
+        {
+          "handlers": [
+            "onClick",
+            "onMouseDown",
+            "onMouseUp",
+            "onKeyPress",
+            "onKeyDown",
+            "onKeyUp"
+          ]
+        }
+      ]
+    }
+  }
+}

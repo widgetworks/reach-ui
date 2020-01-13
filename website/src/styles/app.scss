@@ -1,0 +1,100 @@
+@import "normalize";
+@import "reset";
+@import "global-styles";
+
+////////////////////////////////////////////////////////////////////////////////
+// Base styles
+
+html {
+  font-size: 16px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-size: 1em;
+  line-height: var(--line-height-base);
+  font-weight: var(--font-weight-base);
+  font-family: var(--font-family-base);
+  background: var(--color-background);
+  color: var(--color-font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+mark {
+  background-color: var(--color-warning);
+  color: inherit;
+}
+
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring,
+button:-moz-focusring {
+  outline-color: var(--color-focus-outline);
+}
+
+tt,
+code,
+pre {
+  border: 1px solid var(--color-code-border);
+  border-radius: 3px;
+  background-color: var(--color-code-background);
+  color: var(--color-code-font);
+  font-family: var(--code-font-family);
+}
+
+p pre,
+li pre {
+  display: inline-block;
+  line-height: 1;
+  font-size: 80%;
+  padding: 0.125em;
+  margin: 0;
+}
+
+tt,
+code {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+}
+
+pre code {
+  line-height: 1.4;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration-color: var(--color-primary-light);
+  text-decoration-style: dotted;
+
+  &:hover {
+    color: var(--color-primary-bright);
+  }
+}
+
+@import "forms";
+
+////////////////////////////////////////////////////////////////////////////////
+// Utility classes
+
+.slide-down {
+  animation: slide-down 200ms ease-out;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Components
+
+// Layout components
+@import "components/Layout/styles";
+@import "components/Header/styles";
+@import "components/Footer/styles";
+@import "components/TopNav/styles";
+@import "components/MainNav/styles";
+
+@import "components/AutoLinks/styles";
+@import "components/FormInput/styles";
+@import "components/NavList/styles";
+@import "components/SearchField/styles";

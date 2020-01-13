@@ -51,8 +51,10 @@ function NavList({ children }) {
 
 function Bar() {
   return (
-    <div
+    <span
+      aria-hidden
       style={{
+        display: "block",
         height: 3,
         background: "white",
         margin: "3px 0"
