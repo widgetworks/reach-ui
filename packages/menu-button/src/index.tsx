@@ -7,10 +7,11 @@
  * @see Docs     https://reacttraining.com/reach-ui/menu-button
  * @see Source   https://github.com/reach/reach-ui/tree/master/packages/menu-button
  * @see WAI-ARIA https://www.w3.org/TR/wai-aria-practices-1.1/#menubutton
+ *
+ * TODO: Fix flash when opening a menu button on a screen with another open menu
  */
 
 import React, {
-  createContext,
   forwardRef,
   useCallback,
   useContext,
@@ -24,9 +25,15 @@ import { useId } from "@reach/auto-id";
 import Popover, { Position } from "@reach/popover";
 import {
   checkStyles,
+  createDescendantContext,
+  createNamedContext,
+  Descendant,
+  DescendantProvider,
   forwardRefWithAs,
   makeId,
   noop,
+  useDescendant,
+  useDescendants,
   useForkedRef,
   usePrevious,
   wrapEvent
@@ -43,11 +50,14 @@ const SEARCH_FOR_ITEM = "SEARCH_FOR_ITEM";
 const SELECT_ITEM_AT_INDEX = "SELECT_ITEM_AT_INDEX";
 const SET_BUTTON_ID = "SET_BUTTON_ID";
 
-const DescendantContext = createContext<IDescendantContext>(
-  {} as IDescendantContext
+const MenuDescendantContext = createDescendantContext<
+  HTMLElement,
+  DescendantProps
+>("MenuDescendantContext");
+const MenuContext = createNamedContext<IMenuContext>(
+  "MenuContext",
+  {} as IMenuContext
 );
-const MenuContext = createContext<IMenuContext>({} as IMenuContext);
-const useDescendantContext = () => useContext(DescendantContext);
 const useMenuContext = () => useContext(MenuContext);
 
 const initialState: MenuButtonState = {
@@ -90,7 +100,10 @@ export const Menu: React.FC<MenuProps> = ({ id, children }) => {
   let buttonRef = useRef(null);
   let menuRef = useRef(null);
   let popoverRef = useRef(null);
-  let [descendants, setDescendants] = useDescendants();
+  let [descendants, setDescendants] = useDescendants<
+    HTMLElement,
+    DescendantProps
+  >();
   let [state, dispatch] = useReducer(reducer, initialState);
   let menuId = useId(id);
 
@@ -106,7 +119,11 @@ export const Menu: React.FC<MenuProps> = ({ id, children }) => {
   useEffect(() => checkStyles("menu-button"), []);
 
   return (
-    <DescendantProvider descendants={descendants} set={setDescendants}>
+    <DescendantProvider
+      context={MenuDescendantContext}
+      items={descendants}
+      set={setDescendants}
+    >
       <MenuContext.Provider value={context}>
         {typeof children === "function"
           ? children({ isOpen: state.isOpen })
@@ -237,7 +254,7 @@ if (__DEV__) {
  *
  * MenuItem and MenuLink share most of the same functionality captured here.
  */
-const MenuItemImpl = forwardRefWithAs<"div", MenuItemImplProps>(
+const MenuItemImpl = forwardRefWithAs<MenuItemImplProps, "div">(
   function MenuItemImpl(
     {
       as: Comp,
@@ -264,7 +281,7 @@ const MenuItemImpl = forwardRefWithAs<"div", MenuItemImplProps>(
       state: { isOpen, selectionIndex }
     } = useMenuContext();
 
-    let ownRef = useRef<any>(null);
+    let ownRef = useRef<HTMLElement | null>(null);
 
     /*
      * After the ref is mounted to the DOM node, we check to see if we have an
@@ -291,14 +308,14 @@ const MenuItemImpl = forwardRefWithAs<"div", MenuItemImplProps>(
 
     let mouseEventStarted = useRef(false);
 
-    /*
-     * By default, we assume valueText is a unique value for all menu items, so it
-     * should be sufficient as an unique identifier we can use to find our index.
-     * However there may be some use cases where this is not the case and an
-     * explicit unique index may be provided by the app.
-     */
-    let key = indexProp ?? valueText;
-    let index = useDescendant(key, ownRef);
+    const index = useDescendant(
+      {
+        context: MenuDescendantContext,
+        element: ownRef.current,
+        key: valueText
+      },
+      indexProp
+    );
     let isSelected = index === selectionIndex;
 
     function select() {
@@ -489,7 +506,7 @@ export type MenuItemImplProps = {
  *
  * @see Docs https://reacttraining.com/reach-ui/menu-button#menuitem
  */
-export const MenuItem = forwardRefWithAs<"div", MenuItemProps>(
+export const MenuItem = forwardRefWithAs<MenuItemProps, "div">(
   function MenuItem({ as = "div", ...props }, forwardedRef) {
     return <MenuItemImpl {...props} ref={forwardedRef} as={as} />;
   }
@@ -527,7 +544,7 @@ export const MenuItems = forwardRef<HTMLDivElement, MenuItemsProps>(
       menuRef,
       state: { isOpen, buttonId, selectionIndex, typeaheadQuery }
     } = useMenuContext();
-    const { descendants: menuItems } = useDescendantContext();
+    const { descendants: menuItems } = useContext(MenuDescendantContext);
     const ref = useForkedRef(menuRef, forwardedRef);
 
     useEffect(() => {
@@ -704,8 +721,8 @@ if (__DEV__) {
  * @see Docs https://reacttraining.com/reach-ui/menu-button#menulink
  */
 export const MenuLink = forwardRefWithAs<
-  "a",
-  MenuLinkProps & { component?: any }
+  MenuLinkProps & { component?: any },
+  "a"
 >(function MenuLink({ as = "a", component, onSelect, ...props }, forwardedRef) {
   if (component) {
     console.warn(
@@ -865,137 +882,20 @@ if (__DEV__) {
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * This hook registers our menu item by passing it into an array. We can then
- * search that array by a unique key to find its index. We use this for focus
- * management and keyboard navigation.
- */
-function useDescendant(key: DescendantKey, ref: React.RefObject<any>) {
-  // If the key is a number, it's coming from an index prop.
-  let indexProp = typeof key === "number" ? key : undefined;
-  let [index, setIndex] = useState(indexProp ?? -1);
-  let {
-    descendants,
-    registerDescendant,
-    deregisterDescendant
-  } = useDescendantContext();
-
-  useEffect(() => {
-    // Descendants require a unique key. Skip updates if none exists.
-    if (key == null) {
-      return;
-    }
-
-    registerDescendant(key, ref);
-    return () => void deregisterDescendant(key);
-  }, [ref, registerDescendant, deregisterDescendant, key]);
-
-  useEffect(() => {
-    if (indexProp == null) {
-      let newIndex = descendants.findIndex(i => i.key === key);
-      if (newIndex !== index) {
-        setIndex(newIndex);
-      }
-    }
-  }, [descendants, key, index, indexProp]);
-
-  if (indexProp != null && indexProp !== index) {
-    setIndex(indexProp);
-  }
-
-  return index;
-}
-
-function useDescendants() {
-  return useState([] as Descendant[]);
-}
-
-function DescendantProvider({
-  children,
-  descendants,
-  set
-}: {
-  children: React.ReactChild;
-  descendants: Descendant[];
-  set(arg: Descendant[] | ((prevItems: Descendant[]) => Descendant[])): void;
-}) {
-  let registerDescendant = useCallback(
-    (key, ref) => {
-      set(items => {
-        let newItem = { key, ref };
-
-        /*
-         * When registering a descendant, we need to make sure we insert in into
-         * the array in the same order that it appears in the DOM. So as new
-         * descendants are added or maybe some are removed, we always know that
-         * the array is up-to-date and correct.
-         *
-         * So here we look at our registered descendants and see if the new
-         * element we are adding appears earlier than an existing descendant's DOM
-         * node via `node.compareDocumentPosition`. If it does, we insert the new
-         * element at this index. Because `registerDescendant` will be called in
-         * an effect every time the descendants state value changes, we should be
-         * sure that this index is accurate when descendent elements come or go
-         * from our component.
-         */
-        let index = items.findIndex(el => {
-          if (!el.ref.current || !ref.current) {
-            return false;
-          }
-          /*
-           * Does this element's DOM node appear before another item in the array
-           * in our DOM tree? If so, return true to grab the index at this point
-           * in the array so we know where to insert the new element.
-           */
-          return Boolean(
-            el.ref.current.compareDocumentPosition(ref.current) &
-              Node.DOCUMENT_POSITION_PRECEDING
-          );
-        });
-
-        // If an index is not found we will push the element to the end.
-        if (index === -1) {
-          return [...items, newItem];
-        }
-        return [...items.slice(0, index), newItem, ...items.slice(index)];
-      });
-    },
-    [set]
-  );
-
-  let deregisterDescendant = useCallback(
-    key => {
-      set(items => items.filter(el => el.key !== key));
-    },
-    [set]
-  );
-
-  return (
-    <DescendantContext.Provider
-      value={{
-        descendants,
-        registerDescendant,
-        deregisterDescendant
-      }}
-    >
-      {children}
-    </DescendantContext.Provider>
-  );
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-/**
  * When a user's typed input matches the string displayed in a menu item, it is
  * expected that the matching menu item is selected. This is our matching
  * function.
  */
-function findItemFromTypeahead(items: Descendant[], string: string = "") {
+function findItemFromTypeahead(
+  items: Descendant<HTMLElement>[],
+  string: string = ""
+) {
   if (!string) {
     return null;
   }
 
-  const found = items.find(({ ref }) =>
-    ref?.current?.dataset?.valuetext?.toLowerCase().startsWith(string)
+  const found = items.find(({ element }) =>
+    element?.dataset?.valuetext?.toLowerCase().startsWith(string)
   );
   return found ? items.indexOf(found) : null;
 }
@@ -1035,7 +935,6 @@ function reducer(
   state: MenuButtonState,
   action: MenuButtonAction = {} as MenuButtonAction
 ): MenuButtonState {
-  let payload;
   switch (action.type) {
     case CLICK_MENU_ITEM:
       /*
@@ -1086,10 +985,10 @@ function reducer(
         buttonId: action.payload
       };
     case SEARCH_FOR_ITEM:
-      if (typeof payload !== "undefined") {
+      if (typeof action.payload !== "undefined") {
         return {
           ...state,
-          typeaheadQuery: payload
+          typeaheadQuery: action.payload
         };
       }
       return state;
@@ -1101,22 +1000,10 @@ function reducer(
 ////////////////////////////////////////////////////////////////////////////////
 // Types
 
+type DescendantProps = { key: string };
 type ButtonRef = React.RefObject<null | HTMLElement>;
 type MenuRef = React.RefObject<null | HTMLElement>;
 type PopoverRef = React.RefObject<null | HTMLElement>;
-
-type DescendantKey = string | number;
-
-type Descendant = {
-  key: DescendantKey;
-  ref: React.RefObject<any>;
-};
-
-interface IDescendantContext {
-  descendants: Descendant[];
-  registerDescendant(key: DescendantKey, ref: React.RefObject<any>): void;
-  deregisterDescendant(key: DescendantKey): void;
-}
 
 interface IMenuContext {
   buttonRef: ButtonRef;
