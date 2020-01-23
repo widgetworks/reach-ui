@@ -1,5 +1,15 @@
 const path = require("path");
 
+// TODO: Import JS variables for sass data
+/* const baseTheme = require("./src/lib/baseTheme");
+
+function themeToSass(theme) {
+  let variables = Object.entries(theme).reduce((sassData, [key, value]) => {
+    return `${sassData}\n\t--${key}: ${value};`;
+  }, "");
+  return `:root {${variables}\n}`;
+} */
+
 module.exports = {
   pathPrefix: "/reach-ui/",
   siteMetadata: {

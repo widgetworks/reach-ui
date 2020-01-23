@@ -1,5 +1,6 @@
 import React from "react";
 import cx from "classnames";
+import "./styles.scss";
 
 export default function Footer({ className }) {
   return (

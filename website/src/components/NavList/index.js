@@ -2,6 +2,7 @@
 import React, { forwardRef } from "react";
 import cx from "classnames";
 import Link from "gatsby-link";
+import "./styles.scss";
 
 export const NavList = forwardRef(function NavList(
   { className, ...props },

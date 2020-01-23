@@ -1,6 +1,7 @@
 import React, { createContext, forwardRef, useContext } from "react";
 import { useId } from "@reach/auto-id";
 import cx from "classnames";
+import "./styles.scss";
 
 const FormInputLabelContext = createContext({
   id: null,

@@ -1,3 +1,13 @@
+import React from "react";
+// import Helmet from 'react-helmet';
+// import cx from 'classnames';
+import ThemeProvider from "./src/components/ThemeProvider";
+import "./src/styles/app.scss";
+
+export const wrapRootElement = ({ element }) => {
+  return <ThemeProvider>{element}</ThemeProvider>;
+};
+
 /*
  * @reach/router (and by association, Gatsby) adds a role of `group` to the
  * focus wrapper element. We're going to remove that default behavior in the
@@ -5,7 +15,7 @@
  * in VoiceOver + NVDA which is less than desirable.
  * This is a workaround for now.
  */
-exports.onInitialClientRender = () => {
+export const onInitialClientRender = () => {
   let rootEl = document.getElementById("gatsby-focus-wrapper");
   if (rootEl) {
     rootEl.removeAttribute("role");

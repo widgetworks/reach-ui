@@ -1,6 +1,8 @@
+@import "functions";
+@import "global-styles";
 @import "normalize";
 @import "reset";
-@import "global-styles";
+@import "reach";
 
 ////////////////////////////////////////////////////////////////////////////////
 // Base styles
@@ -66,14 +68,17 @@ pre code {
 }
 
 a {
-  color: var(--color-primary);
-  text-decoration-color: var(--color-primary-light);
-  text-decoration-style: dotted;
+  color: var(--link-color);
+  text-decoration-color: var(--link-color-text-decoration);
+  text-decoration-style: var(--link-style-text-decoration);
 
   &:hover {
-    color: var(--color-primary-bright);
+    color: var(--link-color-hover);
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// Generic components
 
 @import "forms";
 
@@ -83,18 +88,3 @@ a {
 .slide-down {
   animation: slide-down 200ms ease-out;
 }
-
-////////////////////////////////////////////////////////////////////////////////
-// Components
-
-// Layout components
-@import "components/Layout/styles";
-@import "components/Header/styles";
-@import "components/Footer/styles";
-@import "components/TopNav/styles";
-@import "components/MainNav/styles";
-
-@import "components/AutoLinks/styles";
-@import "components/FormInput/styles";
-@import "components/NavList/styles";
-@import "components/SearchField/styles";

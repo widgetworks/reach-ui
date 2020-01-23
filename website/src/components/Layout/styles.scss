@@ -64,6 +64,10 @@
   &__content-inner {
     height: 100%;
     flex: 1 1 100%;
+
+    > :first-child {
+      margin-top: 0;
+    }
   }
 
   &__side-right {
@@ -71,10 +75,23 @@
     width: var(--width-main-sidebar);
     flex: 0 0 var(--width-main-sidebar);
     padding: var(--rhythm);
+    padding-top: 0;
   }
 
   &__Footer {
     padding: var(--rhythm);
     padding-left: var(--width-main-sidebar);
+  }
+
+  &__AutoLinks {
+    > :first-child {
+      margin-top: 0;
+    }
+  }
+
+  &__ThemeSelect {
+    position: fixed;
+    right: var(--rhythm);
+    bottom: var(--rhythm);
   }
 }

@@ -48,6 +48,7 @@ import { useTransition, animated } from "react-spring/web.cjs";
 import { useThrottle } from "use-throttle";
 import Layout from "../Layout";
 import MDXPre from "./MDXPre";
+import "./styles.scss";
 
 let firstLoad = true;
 
@@ -75,7 +76,7 @@ function MDXLayout({ children }) {
   }, []);
 
   return (
-    <Layout>
+    <Layout className="MDXLayout">
       <MDXProvider
         components={{
           pre: function(props) {
@@ -140,9 +141,9 @@ function MDXLayout({ children }) {
           }
         }}
       >
-        <main>
-          <div ref={contentFocusRef}>{children}</div>
-        </main>
+        <div className="MDXLayout__inner" ref={contentFocusRef}>
+          {children}
+        </div>
       </MDXProvider>
     </Layout>
   );

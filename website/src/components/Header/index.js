@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Link } from "gatsby";
 import ReachUILogo from "$components/ReachUILogo";
+import "./styles.scss";
 
 function Header({ siteTitle, children, ...props }) {
   return (

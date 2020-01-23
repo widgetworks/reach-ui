@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import cx from "classnames";
 import { NavList, NavItem, NavLink } from "$components/NavList";
+import "./styles.scss";
 
 export default function MainNav({ className }) {
   const navNode = useRef(null);

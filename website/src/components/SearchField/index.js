@@ -6,6 +6,7 @@ import {
   FormInputGroup,
   FormInputLabel
 } from "$components/FormInput";
+import "./styles.scss";
 
 export default function SearchField({ className }) {
   let [value, setValue] = useState("");

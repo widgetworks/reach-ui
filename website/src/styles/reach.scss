@@ -1,0 +1,25 @@
+@import "~@reach/dialog/styles.css";
+@import "~@reach/skip-nav/styles.css";
+@import "~@reach/menu-button/styles.css";
+@import "~@reach/slider/styles.css";
+@import "~@reach/tabs/styles.css";
+@import "~@reach/tooltip/styles.css";
+@import "~@reach/combobox/styles.css";
+
+[data-reach-popover] {
+  background: var(--color-background);
+  color: var(--color-font);
+}
+
+[data-reach-menu-list],
+[data-reach-menu-items] {
+  background: var(--color-background);
+  color: var(--color-font);
+  border: 1px solid var(--border-color-base);
+}
+
+[data-reach-menu-item][data-selected] {
+  background: var(--color-selected-background);
+  color: var(--color-selected-font);
+  outline: none;
+}

@@ -1,4 +1,5 @@
 import React from "react";
+import cx from "classnames";
 import PropTypes from "prop-types";
 import { SkipNavLink, SkipNavContent } from "@reach/skip-nav";
 import { useStaticQuery, graphql } from "gatsby";
@@ -8,17 +9,10 @@ import SearchField from "$components/SearchField";
 import AutoLinks from "$components/AutoLinks";
 import MainNav from "$components/MainNav";
 import TopNav from "$components/TopNav";
+import ThemeSelect from "$components/ThemeSelect";
+import "./styles.scss";
 
-import "@reach/dialog/styles.css";
-import "@reach/skip-nav/styles.css";
-import "@reach/menu-button/styles.css";
-import "@reach/slider/styles.css";
-import "@reach/tabs/styles.css";
-import "@reach/tooltip/styles.css";
-import "@reach/combobox/styles.css";
-import "$styles/app.scss";
-
-const Layout = ({ children }) => {
+const Layout = ({ children, className }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -30,7 +24,7 @@ const Layout = ({ children }) => {
   `);
 
   return (
-    <div className="Layout">
+    <div className={cx(className, "Layout")}>
       <SkipNavLink style={{ zIndex: 2 }} />
       <Header
         className="Layout__Header"
@@ -63,6 +57,7 @@ const Layout = ({ children }) => {
         </div>
         <Footer className="Layout__Footer" />
       </div>
+      <ThemeSelect className="Layout__ThemeSelect" />
     </div>
   );
 };

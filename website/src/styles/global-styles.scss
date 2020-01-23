@@ -7,7 +7,9 @@ $font-size-base: 16;
   --line-height-base: 1.6;
   --rhythm: calc(#{rem($font-size-base)} * var(--line-height-base));
 
+  --border-color-base: #bbc5ca;
   --border-radius-base: 0.5rem;
+
   --color-background: #fff;
   --color-code-background: #edf2f5;
   --color-code-border: #bbc5ca;
@@ -15,21 +17,43 @@ $font-size-base: 16;
   --color-error: #bf4a3f;
   --color-focus-outline: #1eaedb;
   --color-font: #222;
-  --color-input-background: #f2f5f7;
-  --color-input-border: #bbc5ca;
   --color-primary: #1159a6;
   --color-primary-bright: #007bff;
   --color-primary-light: #3f94bf;
   --color-warning: #e2c503;
+  --color-selected-background: var(--color-primary);
+  --color-selected-font: var(--color-background);
+
   --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol";
   --font-family-code: "SFMono-Regular", Consolas, "Roboto Mono",
     "Droid Sans Mono", "Liberation Mono", Menlo, Courier, monospace;
   --font-weight-base: 400;
-  --line-height-input: 1.15;
-  --padding-input: calc(var(--rhythm) * 0.5);
+
   --width-main-sidebar: calc(var(--rhythm) * 12);
+
+  // Component variables
+  --link-color: var(--color-primary);
+  --link-color-hover: var(--color-primary-bright);
+  --link-color-text-decoration: var(--color-primary-light);
+  --link-style-text-decoration: dotted;
+
+  --input-line-height: 1.15;
+  --input-padding: calc(var(--rhythm) * 0.5);
+  --input-color-background: #f2f5f7;
+  --input-color-background-active: var(--input-color-background);
+  --input-color-border: #bbc5ca;
+  --input-color-border-active: var(--color-font);
+  --input-color-font: var(--color-font);
+  --input-border-radius: var(--border-radius-base);
+
+  --button-color-border: var(--border-color-base);
+  --button-border-radius: var(--border-radius-base);
+  --button-color-background: #d5dbdf;
+  --button-color-background-hover: #c0c9ce;
+  --button-color-font: var(--color-font);
+  --button-font-weight: var(--font-weight-base);
 }
 
 @keyframes slide-down {
