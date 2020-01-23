@@ -16,8 +16,10 @@ function ThemeSelect({ className }) {
             setTheme(event.target.value);
           }}
         >
-          {themes.map(themeName => (
-            <option key={themeName}>{themeName}</option>
+          {Object.entries(themes).map(([, { value, name }]) => (
+            <option key={value} value={value}>
+              {name}
+            </option>
           ))}
         </select>
       </label>

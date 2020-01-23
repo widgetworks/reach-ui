@@ -1,22 +1,25 @@
 import React, { createContext, useLayoutEffect, useState } from "react";
-import theme from "$lib/theme";
+import themeSettings from "$lib/theme";
 
 const CACHE_KEY = "__reach_ui_theme";
 
-let themes = Object.keys(theme).filter(key => key !== "default");
+let { themes } = themeSettings;
+let themeValues = Object.entries(themes).reduce((values, [, { value }]) => {
+  return [...values, value];
+}, []);
 
 export const ThemeContext = createContext({
-  current: theme.default,
+  current: themeSettings.default.value,
   themes,
   setTheme: () => void null
 });
 
 function ThemeProvider({ children }) {
-  let [currentTheme, setCurrentTheme] = useState(theme.default);
+  let [currentTheme, setCurrentTheme] = useState(themeSettings.default.value);
 
   useLayoutEffect(() => {
     let localTheme = window.localStorage.getItem(CACHE_KEY);
-    if (localTheme && themes.includes(localTheme)) {
+    if (localTheme && themeValues.includes(localTheme)) {
       setCurrentTheme(localTheme);
     }
   }, []);
@@ -42,13 +45,7 @@ function ThemeProvider({ children }) {
 export default ThemeProvider;
 
 function applyTheme(themeName) {
-  const nextTheme = {
-    ...theme[theme.base],
-    ...theme[themeName]
-  };
-  console.log({ nextTheme });
-  for (let key of Object.keys(nextTheme)) {
-    const value = nextTheme[key];
-    document.documentElement.style.setProperty(`--${key}`, value);
-  }
+  document
+    .getElementsByTagName("html")[0]
+    .setAttribute("data-theme", themeName);
 }
